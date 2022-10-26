@@ -1,12 +1,9 @@
-import { Typography } from '@mui/material'
-import React from 'react'
 import './App.scss'
+import { Header } from './components/Header'
 
 function App() {
     return (
-        <Typography variant='h1'>
-            Lexical Analyzer
-        </Typography>
+        <></>
     )
 }
 
