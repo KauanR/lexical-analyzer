@@ -1,0 +1,44 @@
+#inputter {
+    width: 100%;
+    height: max-content;
+
+    div.MuiCardContent-root {
+        display: flex;
+        flex-direction: column;
+        gap: 1.25rem;
+
+        h6 {
+            width: 100%;
+            text-align: center;
+        }
+
+        div.field {
+            display: flex;
+            gap: .75rem;
+            justify-content: center;
+            align-items: center;
+
+            .MuiFormControl-root {
+                width: 50%;
+            }
+        }
+
+        hr.divider {
+            width: 70%;
+            margin: 0 auto;
+        }
+
+        div.tokens {
+            display: flex;
+            flex-direction: row;
+            gap: 0.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        button#submit {
+            width: max-content;
+            margin: 0 auto;
+        }
+    }
+}
