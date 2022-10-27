@@ -9,7 +9,7 @@ export const Header = () => {
     }
 
     return (
-        <AppBar className='header'>
+        <AppBar position='static' className='header'>
             <Toolbar>
                 <div className="spacer"></div>
                 <Typography variant='h6'>
