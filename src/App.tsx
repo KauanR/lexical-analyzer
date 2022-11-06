@@ -1,23 +1,21 @@
-import { useEffect, useState } from 'react'
-import './App.scss'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { Header } from './components/Header'
-import { Inputter } from './components/Inputter'
+import { HomePage } from './pages/Home'
+import { AnalyzePage } from './pages/Analyze'
+import './App.scss'
 
 function App() {
-    const [tokens, setTokens] = useState<string[]>([])
-
-    useEffect(() => {
-        console.log('Tokens no component root', tokens)
-    }, [tokens])
-
     return (
-        <>
+        <BrowserRouter>
             <Header/>
 
             <main>
-                <Inputter onSubmit={val => setTokens(val)} />
+                <Routes>
+                    <Route path='/' element={<HomePage/>} />
+                    <Route path='/analyze' element={<AnalyzePage/>} />
+                </Routes>
             </main>
-        </>
+        </BrowserRouter>
     )
 }
 
