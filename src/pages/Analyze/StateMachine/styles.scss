@@ -1,0 +1,52 @@
+div.state-machine {
+    display: flex;
+    gap: 1rem;
+    flex-direction: column;
+    align-items: center;
+
+    div.input {
+        width: 50%;
+    }
+
+    div.grammar-table-container {
+        height: 100%;
+        overflow: auto;
+    
+        table {
+            table-layout: fixed;
+            width: max-content;
+
+            tr {
+                &.active {
+                    background-color: rgba(0, 0, 0, 0.1);
+                }
+
+                th, td {
+                    text-align: center;
+                    border: 1px solid rgba(224, 224, 224, 1);
+                    padding: .5rem;
+                    font-size: 16px;
+
+                    text-align: center;
+                    border: 1px solid rgba(224, 224, 224, 1);
+                    padding: .5rem;
+
+                    &.grammar-name {
+                        text-align: right;
+                        font-weight: 500;
+                        font-size: 16px;
+                        width: max-content;
+                    }
+    
+                    &.empty-cell {
+                        color: rgba(0, 0, 0, 0.2);
+                    }
+
+                    &.active {
+                        background-color: tomato;
+                    }
+                }
+            }
+        }
+    }
+}

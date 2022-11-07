@@ -1,0 +1,15 @@
+div.tokens {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    gap: 0.5rem;
+
+    div.list {
+        display: flex;
+        flex-direction: row;
+        gap: 0.5rem;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+}
