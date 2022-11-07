@@ -43,7 +43,7 @@ export const StateMachine = ({ alphabet, rules }: Props) => {
         )
 
         setHistory(current => [...current, {
-            lastState: `${state.isInittial ? '✱' : ''}${state.isFinal ? '➜' : ''} ${state.name}`,
+            lastState: `${state.isInittial ? '➜' : ''}${state.isFinal ? '✱' : ''} ${state.name}`,
             type: state.isFinal ? 'success' : 'error',
             value: analyzeVal
         }])
