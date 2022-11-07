@@ -1,7 +1,9 @@
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField } from '@mui/material'
 import { useEffect, useState } from 'react'
+import { useSnackbar } from 'src/hooks/useSnackbar'
+import { History } from '../types/history'
 import { RuleObj, Rules } from '../types/rules'
-import { State } from '../types/state'
+import { StateMachineHistory } from './History'
 import './styles.scss'
 
 type Props = {
@@ -10,24 +12,67 @@ type Props = {
 }
 
 export const StateMachine = ({ alphabet, rules }: Props) => {
-
-    const [analyzeVal, setAnalyzeVal] = useState<string>('')
-    const lastCharAlphabetIndex = alphabet.findIndex(val => val === analyzeVal.slice(-1))
-
+    
     const [state, setState] = useState<RuleObj>(rules.get('q0') as RuleObj)
     const [stateHistory, setStateHistory] = useState<RuleObj[]>([rules.get('q0') as RuleObj])
 
+    const [analyzeVal, setAnalyzeVal] = useState<string>('')
+    const lastChar = analyzeVal.slice(-1)
+    const lastCharAlphabetIndex = alphabet.findIndex(val => val === lastChar)
+
+    const [history, setHistory] = useState<History[]>([])
+
+    const { createSnack } = useSnackbar()
+
+    const backSpaceHandler = () => {
+        // console.log(state, stateHistory)
+        // setState(stateHistory[stateHistory.length - 2])
+    }
+
+    // Se o caractere inserido for espaço:
+    // - Mostra erro/sucesso(baseado se está num estado final ou não)
+    // - Adiciona o valor digitado ao histórico
+    // - Reinicia a máquina de estados
+    const spaceHandler = () => {
+        createSnack(
+            state.isFinal ? 'Análise aprovada!' : 'Ooops, a análise foi recusada',
+            state.isFinal ? 'success' : 'error'
+        )
+
+        setHistory(current => [...current, {
+            lastState: `${state.isInittial ? '✱' : ''}${state.isFinal ? '➜' : ''} ${state.name}`,
+            type: state.isFinal ? 'success' : 'error',
+            value: analyzeVal
+        }])
+
+        setAnalyzeVal('')
+        setState(rules.get('q0') as RuleObj)
+        setStateHistory([rules.get('q0') as RuleObj])
+    }
+
+    // Rotina executada toda vez em que o campo troca de valor
     useEffect(() => {
+        // Encerra a rotina se o valor estiver vazio
         if(!analyzeVal) return
 
+        if(lastChar === ' ') {
+            spaceHandler()
+            return
+        }
+
+        console.log('cheguei na checagem de estado', analyzeVal, state)
+
+        // Checa se o caractere digitado bate com o que é válido para o estado atual, caso sim, vai pro próximo passo
         const nextState = rules.get(state.value[lastCharAlphabetIndex])
         if(lastCharAlphabetIndex !== -1 && state.value[lastCharAlphabetIndex] && nextState) {
             setState(nextState)
+        } else {
+            setState(JSON.parse(JSON.stringify(rules.get(state.name) as RuleObj)))
         }
     }, [analyzeVal])
 
     useEffect(() => {
-        console.log('troquei o state', state)
+        console.log('Estado atual: ', state)
         setStateHistory(currrent => [...currrent, state])
     }, [state])
 
@@ -39,17 +84,15 @@ export const StateMachine = ({ alphabet, rules }: Props) => {
                 label='Analizador'
                 autoFocus
                 value={analyzeVal}
-                onChange={event => setAnalyzeVal(event.target.value.toUpperCase())}
-                onKeyUp={event => {
-                    event.code === 'Space' && console.log('aaaaa')
-                }}
-                onKeyDown={event => {
-                    event.code === 'Backspace' && setState(stateHistory[stateHistory.length - 2])
+                onChange={event => setAnalyzeVal(event.target.value.toUpperCase()) }
+                onKeyDown={event => event.code === 'Backspace' && backSpaceHandler()}
+                { ...history.length > 0 && {
+                    InputProps: { endAdornment: <StateMachineHistory history={history} /> }
                 }}
             />
 
             <TableContainer className='grammar-table-container'>
-                <Table>
+                <Table stickyHeader>
                     <TableHead>
                         <TableRow>
                             <TableCell className='grammar-name'>
@@ -68,6 +111,7 @@ export const StateMachine = ({ alphabet, rules }: Props) => {
                             return (
                                 <TableRow 
                                     key={ruleName}
+                                    id={ruleName}
                                     className={
                                         state.name === ruleName ? 'active' : ''
                                     }
@@ -80,9 +124,7 @@ export const StateMachine = ({ alphabet, rules }: Props) => {
                                     { ruleObj.value.map((val, index) => (
                                         <TableCell 
                                             key={index} 
-                                            { ...val !== '' && {
-                                                className: `state-cell ${state.name === ruleName && lastCharAlphabetIndex === index ? 'active' : ''}`
-                                            }}
+                                            className={val !== '' ? 'state-cell' : ''}
                                         >
                                             { val }
                                         </TableCell>

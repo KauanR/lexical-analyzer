@@ -9,13 +9,11 @@ div.state-machine {
     }
 
     div.grammar-table-container {
-        height: 100%;
+        max-height: 60vh;
+        background-color: white;
         overflow: auto;
     
         table {
-            table-layout: fixed;
-            width: max-content;
-
             tr {
                 &.active {
                     background-color: rgba(0, 0, 0, 0.1);
@@ -40,10 +38,6 @@ div.state-machine {
     
                     &.empty-cell {
                         color: rgba(0, 0, 0, 0.2);
-                    }
-
-                    &.active {
-                        background-color: tomato;
                     }
                 }
             }
