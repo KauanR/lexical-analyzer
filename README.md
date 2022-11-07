@@ -1,46 +1,40 @@
-# Getting Started with Create React App
+# Lexical Analyzer
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Live Demo
+https://lexical-analyzer-demo.herokuapp.com/
 
-## Available Scripts
+## About
+Application made as a partial requirement to obtain a Bachelor's degree in the discipline of 'Computação Aplicada à Computação - URI'.
+<br>
+The technologies used in the development were:
+* [React](https://reactjs.org/)
+* [MUI](https://mui.com/)
+* [Heroku](https://www.heroku.com/)
 
-In the project directory, you can run:
 
-### `npm start`
+<!-- GETTING STARTED -->
+## Getting Started
+### Prerequisites
+You will only need [NodeJS](https://nodejs.org/en/download/) and a package manager of your choice.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### Installation
+1. Clone the repo
+   ```sh
+   git clone https://github.com/KauanR/lexical-analyzer
+   ```
+2. Install NPM packages
+   ```sh
+   npm install
+   ```
+4. Run it
+   ```sh
+   npm run dev
+   ```
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+<!-- USAGE EXAMPLES -->
+## Usage
+The usage is pretty straightforward: First, enter the tokens in the field at the top of the page and then click on 'Iniciar Análisador'. You will be taken to a new page where you can test the lexical analysis of previously entered tokens.
 
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+<!-- LICENSE -->
+## License
+Distributed under the MIT License. See `LICENSE.txt` for more information.
