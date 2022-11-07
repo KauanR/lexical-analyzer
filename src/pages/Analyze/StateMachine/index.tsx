@@ -14,19 +14,22 @@ type Props = {
 export const StateMachine = ({ alphabet, rules }: Props) => {
     
     const [state, setState] = useState<RuleObj>(rules.get('q0') as RuleObj)
-    const [stateHistory, setStateHistory] = useState<RuleObj[]>([rules.get('q0') as RuleObj])
+    const [stateHistory, setStateHistory] = useState<RuleObj[]>([])
 
     const [analyzeVal, setAnalyzeVal] = useState<string>('')
     const lastChar = analyzeVal.slice(-1)
-    const lastCharAlphabetIndex = alphabet.findIndex(val => val === lastChar)
 
     const [history, setHistory] = useState<History[]>([])
 
     const { createSnack } = useSnackbar()
 
+    // Lida com o backtracing
     const backSpaceHandler = () => {
-        // console.log(state, stateHistory)
-        // setState(stateHistory[stateHistory.length - 2])
+        const newStateHistory: RuleObj[] = JSON.parse(JSON.stringify(stateHistory))
+        newStateHistory.splice(-1)
+
+        setState(newStateHistory[newStateHistory.length - 1] || rules.get('q0') as RuleObj)
+        setStateHistory(newStateHistory)
     }
 
     // Se o caractere inserido for espaço:
@@ -46,35 +49,32 @@ export const StateMachine = ({ alphabet, rules }: Props) => {
         }])
 
         setAnalyzeVal('')
+        setStateHistory([])
         setState(rules.get('q0') as RuleObj)
-        setStateHistory([rules.get('q0') as RuleObj])
     }
 
     // Rotina executada toda vez em que o campo troca de valor
     useEffect(() => {
-        // Encerra a rotina se o valor estiver vazio
-        if(!analyzeVal) return
+        if(!analyzeVal) {
+            setState(rules.get('q0') as RuleObj)
+        }
 
+        // Se o último caractere for um espaço, vai pra rotina de checagem
         if(lastChar === ' ') {
             spaceHandler()
             return
         }
 
-        console.log('cheguei na checagem de estado', analyzeVal, state)
-
         // Checa se o caractere digitado bate com o que é válido para o estado atual, caso sim, vai pro próximo passo
+        const lastCharAlphabetIndex = alphabet.findIndex(val => val === lastChar)
         const nextState = rules.get(state.value[lastCharAlphabetIndex])
         if(lastCharAlphabetIndex !== -1 && state.value[lastCharAlphabetIndex] && nextState) {
             setState(nextState)
+            setStateHistory(currrent => [...currrent, nextState])
         } else {
             setState(JSON.parse(JSON.stringify(rules.get(state.name) as RuleObj)))
         }
     }, [analyzeVal])
-
-    useEffect(() => {
-        console.log('Estado atual: ', state)
-        setStateHistory(currrent => [...currrent, state])
-    }, [state])
 
     return (
         <div className='state-machine'>
@@ -84,6 +84,7 @@ export const StateMachine = ({ alphabet, rules }: Props) => {
                 label='Analizador'
                 autoFocus
                 value={analyzeVal}
+                autoComplete='off'
                 onChange={event => setAnalyzeVal(event.target.value.toUpperCase()) }
                 onKeyDown={event => event.code === 'Backspace' && backSpaceHandler()}
                 { ...history.length > 0 && {
